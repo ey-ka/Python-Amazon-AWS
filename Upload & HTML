@@ -1,0 +1,27 @@
+//Загрузка файлов на Амазон и формирование HTML-страницы с линками на эти файлы(Uploading files to Amazon and creating an HTML page with links to these files)
+
+import boto3
+import pickle
+from botocore.client import Config
+
+ACCESS_KEY_ID = "*******"  // your Access Key
+ACCESS_SECRET_KEY = '******'  // your Access Secret Key
+BUCKET_NAME = "your_bucket"
+
+s3 = boto3.resource('s3', aws_access_key_id=ACCESS_KEY_ID, aws_secret_access_key=ACCESS_SECRET_KEY, config=Config(region_name = 'your_region', signature_version="s3v4"))
+
+my_bucket = s3.Bucket(BUCKET_NAME)
+
+
+
+sbody = "<html><body>"
+for file in my_bucket.objects.all():
+        link = f"https://{your_bucket}.s3.{your_region}.amazonaws.com/{file.key}"
+        sbody += "<a href=" + link + ">" + file.key + "</a><br/>\r\n"
+
+sbody += "</body></html>"
+
+with open("filename.html", 'w') as Html_file:
+    Html_file.write(sbody)
+    Html_file.close()
+print ("Done")
